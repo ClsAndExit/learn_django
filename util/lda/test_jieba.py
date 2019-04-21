@@ -15,26 +15,8 @@ def readfile(path):
     fp.close()
     return content
 
-## 去除停用词的2个函数
-# 创建停用词list
-def stopwordslist(filepath):
-    stopwords = [line.strip() for line in open(filepath, 'r', encoding='utf-8').readlines()]
-    return stopwords
-
-# 对句子去除停用词
-def movestopwords(sentence):
-    stopwords = stopwordslist('H:\\PythonCode\\lda\\toolFile\\stop_words1.txt')  # 这里加载停用词的路径
-    outstr = ''
-    for word in sentence:
-        if word not in stopwords:
-            if word != '\t'and'\n':
-                outstr += word
-                # outstr += " "
-    return outstr
-
-
-corpus_path = "H:/PythonCode/lda/file/"# 未分词分类预料库路径
-seg_path = "H:/PythonCode/lda/output_file/"  # 分词后分类语料库路径
+corpus_path = "H:/PythonCode/learn_django/util/file/"# 未分词分类预料库路径
+seg_path = "H:/PythonCode/learn_django/util/output_file/"  # 分词后分类语料库路径
 
 
 catelist = os.listdir(corpus_path)  # 获取未分词目录下所有子目录
@@ -59,8 +41,6 @@ for mydir in catelist:
             listcontent += i
             listcontent += " "
         print(listcontent[0:10])
-        listcontent = movestopwords(listcontent)    # 去除停用词
-        print("去除停用词后：", listcontent[0:10])
         listcontent = listcontent.replace("   ", " ").replace("  ", " ")
         savefile(seg_dir + file_path, "".join(listcontent)) # 保存
 
