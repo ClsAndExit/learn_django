@@ -4,6 +4,6 @@
 *.html
 *.css
 *.js
-/file
-/output_file
-/sourceFile
+file
+output_file
+sourceFile
