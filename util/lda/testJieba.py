@@ -3,8 +3,11 @@ import os
 import jieba
 
 # 保存文件的函数
-def savefile(savepath,content):
-    fp = open(savepath,'w',encoding='GBK',errors='ignore')
+def savefile(savepath,content,type=1):
+    if type == 1:
+        fp = open(savepath,'w',encoding='GBK',errors='ignore')
+    else:
+        fp = open(savepath,'a',encoding='GBK',errors='ignore')
     fp.write(content)
     fp.close()
 
