@@ -9,12 +9,32 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn import metrics
 import numpy
-
+import os
+from util.lda.testJieba import readfile
+#从文件导入停用词表
+stpwrdpath = "../sourceFile/stop_words.txt"
+stpwrd_dic = open(stpwrdpath, 'r')
+stpwrd_content = stpwrd_dic.read()
+#将停用词表转换为list
+stpwrdlst = stpwrd_content.splitlines()
+stpwrd_dic.close()
 #调整了格式，一行是一条数据
 def inputdata(filename):
-    f = open(filename,'r',encoding='utf-8')
-    linelist = f.readlines()
-    return linelist
+    # 为file_count的索引，标记当前记录的是哪个文件夹
+    index = 0
+    corpus = list()
+    corpus_path = "H:/PythonCode/learn_django/util/file/"  # 分词后分类预料库路径
+    catelist = os.listdir(corpus_path)  # 获取分词目录下所有子目录
+    for mydir in catelist:
+        class_path = corpus_path + mydir + "/"  # 拼出分类子目录的路径
+        file_list = os.listdir(class_path)  # 列举当前目录所有文件
+        for file_path in file_list:
+            fullname = class_path + file_path  # 路径+文件名
+            print("当前处理的文件是： ", fullname)
+            content = readfile(fullname)  # 读取文件内容
+            corpus.append(str(content)+":"+str(index))
+        index += 1
+    return corpus
 
 def splitset(trainset,testset):
     train_words = []
@@ -42,10 +62,10 @@ def splitset(trainset,testset):
 comma_tokenizer = lambda x: jieba.cut(x, cut_all=True)
 
 def tfvectorize(train_words,test_words):
-    v = TfidfVectorizer(tokenizer=comma_tokenizer,binary = False, decode_error = 'ignore',stop_words = 'english')
+    v = TfidfVectorizer(tokenizer=comma_tokenizer, binary=False, decode_error='ignore', stop_words=stpwrdlst)
     train_data = v.fit_transform(train_words)
     test_data = v.transform(test_words)
-    return train_data,test_data
+    return train_data, test_data
 
 #按比例划分训练集与测试集
 def splitDataset(dataset,splitRatio):
@@ -74,13 +94,13 @@ def train_clf(train_data, train_tags):
     return clf
 
 def covectorize(train_words,test_words):
-    v = CountVectorizer(tokenizer=comma_tokenizer,binary = False, decode_error = 'ignore',stop_words = 'english')
+    v = CountVectorizer(tokenizer=comma_tokenizer,binary = False, decode_error = 'ignore',stop_words = stpwrdlst)
     train_data = v.fit_transform(train_words)
     test_data = v.transform(test_words)
     return train_data,test_data
 
 if __name__ == '__main__':
-    linelist = inputdata('../output_file/newdata.txt')
+    linelist = inputdata(filename="")
     # 划分成两个list
     trainset, testset = splitDataset(linelist, 0.65)
     # for i in trainset:
