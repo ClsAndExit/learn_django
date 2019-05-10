@@ -38,14 +38,16 @@ for mydir in catelist:
 cntVector = CountVectorizer(stop_words=stpwrdlst)
 cntTf = cntVector.fit_transform(corpus)
 
-lda = LatentDirichletAllocation(n_topics=5,learning_offset=50.,random_state=0)
+lda = LatentDirichletAllocation(n_topics=2,learning_offset=50.,random_state=0)
 docres = lda.fit_transform(cntTf)
 
+#已知文本类别
 file_type = 0
 #文档的主题分布
 for i in docres:
     arri = i.tolist()
     file_count[file_type] -= 1
+    #进行先验标注
     arri.append(file_type)
     if file_count[file_type] == 0:
         file_type += 1
