@@ -8,14 +8,14 @@ from util.lda.testJieba import savefile
 import os
 #从文件导入停用词表
 stpwrdpath = "../sourceFile/stop_words.txt"
-stpwrd_dic = open(stpwrdpath, 'rb')
+stpwrd_dic = open(stpwrdpath, 'r')
 stpwrd_content = stpwrd_dic.read()
 #将停用词表转换为list
 stpwrdlst = stpwrd_content.splitlines()
 stpwrd_dic.close()
 
 #用来记录语料库中所有类别文本的数量，该记录用于下文对文档-主题分布进行标签标注
-file_count = list() #[1, 90, 90, 90, 90, 89]
+file_count = list() #[90, 90, 90, 90, 89]
 #为file_count的索引，标记当前记录的是哪个文件夹
 index = 0
 corpus = list()
@@ -36,9 +36,10 @@ for mydir in catelist:
 #将文档数据集转化为单词矩阵
 #如果不需要对特征选择进行分析，那么特征的数量就是被分析文档的数量的大小
 cntVector = CountVectorizer(stop_words=stpwrdlst)
+print(cntVector)
 cntTf = cntVector.fit_transform(corpus)
 
-lda = LatentDirichletAllocation(n_topics=2,learning_offset=50.,random_state=0)
+lda = LatentDirichletAllocation(n_topics=50,learning_offset=50.,random_state=0)
 docres = lda.fit_transform(cntTf)
 
 #已知文本类别
