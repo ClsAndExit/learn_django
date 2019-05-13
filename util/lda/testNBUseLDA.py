@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 # -*- coding:utf-8 -*-
-from sklearn import svm
+from sklearn.naive_bayes import MultinomialNB
 import random
 from sklearn import metrics
 import numpy
@@ -48,9 +48,7 @@ def evaluate(actual, pred):
 
 #创建svm分类器
 def train_clf(train_data, train_tags):
-    clf = svm.SVC(C=10.0, cache_size=200, class_weight=None, coef0=0.0, decision_function_shape=None, degree=3,
-                  gamma='auto', kernel='rbf', max_iter=-1, probability=False, random_state=None, shrinking=True,
-                  tol=0.001, verbose=False)
+    clf = MultinomialNB(alpha=0.0001)
     clf.fit(train_data, numpy.asarray(train_tags))
 
     return clf

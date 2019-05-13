@@ -39,7 +39,7 @@ cntVector = CountVectorizer(stop_words=stpwrdlst)
 print(cntVector)
 cntTf = cntVector.fit_transform(corpus)
 
-lda = LatentDirichletAllocation(n_topics=50,learning_offset=50.,random_state=0)
+lda = LatentDirichletAllocation(n_topics=5,learning_offset=50.,random_state=0)
 docres = lda.fit_transform(cntTf)
 
 #已知文本类别
