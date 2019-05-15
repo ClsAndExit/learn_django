@@ -42,19 +42,34 @@ cntTf = cntVector.fit_transform(corpus)
 lda = LatentDirichletAllocation(n_topics=5,learning_offset=50.,random_state=0)
 docres = lda.fit_transform(cntTf)
 
-#已知文本类别
-file_type = 0
-#文档的主题分布
-for i in docres:
-    arri = i.tolist()
-    file_count[file_type] -= 1
-    #进行先验标注
-    arri.append(file_type)
-    if file_count[file_type] == 0:
-        file_type += 1
-
-    savefile("../sourceFile/docres.txt",str(arri)+'\r',type=2)
+# #已知文本类别
+# file_type = 0
+# #文档的主题分布
+# for i in docres:
+#     arri = i.tolist()
+#     file_count[file_type] -= 1
+#     #进行先验标注
+#     arri.append(file_type)
+#     if file_count[file_type] == 0:
+#         file_type += 1
+#
+#     savefile("../sourceFile/docres.txt",str(arri)+'\r',type=2)
 # #主题、词分布
 # for j in lda.components_:
 #     arrj = j.tolist()
 #     savefile("../sourceFile/components.txt",str(arrj)+'\r',type=2)
+
+#打印每个主题下权重较高的term
+def print_top_words(model, feature_names, n_top_words):
+
+    for topic_idx, topic in enumerate(model.components_):
+        print ("Topic #%d:" % topic_idx)
+        print (" ".join([feature_names[i]
+                        for i in topic.argsort()[:-n_top_words - 1:-1]]))
+    print()
+    #打印主题-词语分布矩阵
+    print (model.components_)
+
+n_top_words=20
+tf_feature_names = cntVector.get_feature_names()
+print_top_words(lda, tf_feature_names, n_top_words)
