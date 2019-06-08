@@ -49,7 +49,7 @@ def evaluate(actual, pred):
 #创建svm分类器
 def train_clf(train_data, train_tags):
     clf = svm.SVC(C=10.0, cache_size=200, class_weight=None, coef0=0.0, decision_function_shape=None, degree=3,
-                  gamma='auto', kernel='rbf', max_iter=-1, probability=False, random_state=None, shrinking=True,
+                  gamma='auto', kernel='rbf', max_iter=-1, probability=True, random_state=None, shrinking=True,
                   tol=0.001, verbose=False)
     clf.fit(train_data, numpy.asarray(train_tags))
 
@@ -62,7 +62,7 @@ if __name__ == '__main__':
     print('train number:', len(trainset))
     print('test number:', len(testset))
 
-    train_words, train_tags, test_words, test_tags = splitset(trainset, testset,split_num=5)
+    train_words, train_tags, test_words, test_tags = splitset(trainset, testset,split_num=12)
     clf = train_clf(train_words,train_tags)
     re = clf.predict(test_words)
     evaluate(numpy.asarray(test_tags),re)

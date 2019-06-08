@@ -19,7 +19,7 @@ def readfile(path):
     return content
 
 if __name__=="__main__":
-    corpus_path = "H:/PythonCode/learn_django/util/file/"  # 未分词分类预料库路径
+    corpus_path = "E:\\DownloadFile\\BDWP\\sougou_all\\xinwen\\"  # 未分词分类预料库路径
     seg_path = "H:/PythonCode/learn_django/util/output_file/"  # 分词后分类语料库路径
     catelist = os.listdir(corpus_path)  # 获取未分词目录下所有子目录
     for mydir in catelist:

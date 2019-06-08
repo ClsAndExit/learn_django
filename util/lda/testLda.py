@@ -1,6 +1,6 @@
 # !/usr/bin/python3
 # -*- coding:utf-8 -*-
-from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 from sklearn.decomposition import LatentDirichletAllocation
 from util.lda.testJieba import readfile
 from util.lda.testJieba import savefile
@@ -19,7 +19,7 @@ file_count = list() #[90, 90, 90, 90, 89]
 #为file_count的索引，标记当前记录的是哪个文件夹
 index = 0
 corpus = list()
-corpus_path = "H:/PythonCode/learn_django/util/output_file/"  # 分词后分类预料库路径
+corpus_path = "H:/PythonCode/learn_django/util/output_file/hulianwang/"  # 分词后分类预料库路径
 catelist = os.listdir(corpus_path)  # 获取分词目录下所有子目录
 for mydir in catelist:
     file_count.append(0)
@@ -35,29 +35,29 @@ for mydir in catelist:
 
 #将文档数据集转化为单词矩阵
 #如果不需要对特征选择进行分析，那么特征的数量就是被分析文档的数量的大小
-cntVector = CountVectorizer(stop_words=stpwrdlst)
+cntVector = TfidfVectorizer(stop_words=stpwrdlst)
 print(cntVector)
 cntTf = cntVector.fit_transform(corpus)
 
-lda = LatentDirichletAllocation(n_topics=5,learning_offset=50.,random_state=0)
+lda = LatentDirichletAllocation(n_topics=12,learning_offset=50.,random_state=0)
 docres = lda.fit_transform(cntTf)
 
-# #已知文本类别
-# file_type = 0
-# #文档的主题分布
-# for i in docres:
-#     arri = i.tolist()
-#     file_count[file_type] -= 1
-#     #进行先验标注
-#     arri.append(file_type)
-#     if file_count[file_type] == 0:
-#         file_type += 1
-#
-#     savefile("../sourceFile/docres.txt",str(arri)+'\r',type=2)
-# #主题、词分布
-# for j in lda.components_:
-#     arrj = j.tolist()
-#     savefile("../sourceFile/components.txt",str(arrj)+'\r',type=2)
+#已知文本类别
+file_type = 0
+#文档的主题分布
+for i in docres:
+    arri = i.tolist()
+    file_count[file_type] -= 1
+    #进行先验标注
+    arri.append(file_type)
+    if file_count[file_type] == 0:
+        file_type += 1
+
+    savefile("../sourceFile/docres.txt",str(arri)+'\r',type=2)
+#主题、词分布
+for j in lda.components_:
+    arrj = j.tolist()
+    savefile("../sourceFile/components.txt",str(arrj)+'\r',type=2)
 
 #打印每个主题下权重较高的term
 def print_top_words(model, feature_names, n_top_words):
